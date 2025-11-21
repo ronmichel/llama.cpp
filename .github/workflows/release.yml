@@ -535,7 +535,7 @@ jobs:
           name: llama-bin-win-sycl-x64.zip
 
   windows-hip:
-    runs-on: windows-2022
+    runs-on: windows-latest
 
     env:
       HIPSDK_INSTALLER_VERSION: "25.Q3"
@@ -544,7 +544,7 @@ jobs:
       matrix:
         include:
           - name: "radeon"
-            gpu_targets: "gfx1150"
+            gpu_targets: "gfx1151"
 
     steps:
       - name: Clone
