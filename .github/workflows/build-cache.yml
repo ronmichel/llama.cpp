@@ -64,7 +64,7 @@ jobs:
           version: ${{ env.SPACEMIT_IME_TOOLCHAIN_VERSION }}
 
   windows-2022-rocm-cache:
-    runs-on: windows-2022
+    runs-on: windows-latest
 
     env:
       # Make sure this is in sync with build.yml
@@ -83,7 +83,7 @@ jobs:
           key: rocm-${{ env.HIPSDK_INSTALLER_VERSION }}-${{ runner.os }}
 
       - name: Setup ROCm
-        if: steps.cache-rocm.outputs.cache-hit != 'true'
+        if: steps.cache-rocm.outputs.cache-hit != 'false'
         uses: ./.github/actions/windows-setup-rocm
         with:
           version: ${{ env.HIPSDK_INSTALLER_VERSION }}
