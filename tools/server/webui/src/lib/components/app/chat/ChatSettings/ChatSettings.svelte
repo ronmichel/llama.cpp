@@ -3,7 +3,6 @@
 		Settings,
 		Funnel,
 		AlertTriangle,
-		Brain,
 		Code,
 		Monitor,
 		Sun,
@@ -18,7 +17,7 @@
 		ChatSettingsFields
 	} from '$lib/components/app';
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
-	import { config, updateMultipleConfig } from '$lib/stores/settings.svelte';
+	import { config, settingsStore } from '$lib/stores/settings.svelte';
 	import { setMode } from 'mode-watcher';
 	import type { Component } from 'svelte';
 
@@ -37,12 +36,6 @@
 			title: 'General',
 			icon: Settings,
 			fields: [
-				{ key: 'apiKey', label: 'API Key', type: 'input' },
-				{
-					key: 'systemMessage',
-					label: 'System Message (will be disabled if left empty)',
-					type: 'textarea'
-				},
 				{
 					key: 'theme',
 					label: 'Theme',
@@ -53,30 +46,16 @@
 						{ value: 'dark', label: 'Dark', icon: Moon }
 					]
 				},
+				{ key: 'apiKey', label: 'API Key', type: 'input' },
+				{
+					key: 'systemMessage',
+					label: 'System Message',
+					type: 'textarea'
+				},
 				{
 					key: 'pasteLongTextToFileLen',
 					label: 'Paste long text to file length',
 					type: 'input'
-				},
-				{
-					key: 'showMessageStats',
-					label: 'Show message generation statistics',
-					type: 'checkbox'
-				},
-				{
-					key: 'showTokensPerSecond',
-					label: 'Show tokens per second',
-					type: 'checkbox'
-				},
-				{
-					key: 'keepStatsVisible',
-					label: 'Keep stats visible after generation',
-					type: 'checkbox'
-				},
-				{
-					key: 'showModelInfo',
-					label: 'Show model information',
-					type: 'checkbox'
 				},
 				{
 					key: 'enableContinueGeneration',
@@ -90,13 +69,45 @@
 					type: 'checkbox'
 				},
 				{
+					key: 'askForTitleConfirmation',
+					label: 'Ask for confirmation before changing conversation title',
+					type: 'checkbox'
+				}
+			]
+		},
+		{
+			title: 'Display',
+			icon: Monitor,
+			fields: [
+				{
+					key: 'showMessageStats',
+					label: 'Show message generation statistics',
+					type: 'checkbox'
+				},
+				{
+					key: 'showThoughtInProgress',
+					label: 'Show thought in progress',
+					type: 'checkbox'
+				},
+				{
+					key: 'keepStatsVisible',
+					label: 'Keep stats visible after generation',
+					type: 'checkbox'
+				},
+				{
+					key: 'autoMicOnEmpty',
+					label: 'Show microphone on empty input',
+					type: 'checkbox',
+					isExperimental: true
+				},
+				{
 					key: 'renderUserContentAsMarkdown',
 					label: 'Render user content as Markdown',
 					type: 'checkbox'
 				},
 				{
-					key: 'askForTitleConfirmation',
-					label: 'Ask for confirmation before changing conversation title',
+					key: 'disableAutoScroll',
+					label: 'Disable automatic scroll',
 					type: 'checkbox'
 				}
 			]
@@ -209,17 +220,6 @@
 			]
 		},
 		{
-			title: 'Reasoning',
-			icon: Brain,
-			fields: [
-				{
-					key: 'showThoughtInProgress',
-					label: 'Show thought in progress',
-					type: 'checkbox'
-				}
-			]
-		},
-		{
 			title: 'Import/Export',
 			icon: Database,
 			fields: []
@@ -228,11 +228,6 @@
 			title: 'Developer',
 			icon: Code,
 			fields: [
-				{
-					key: 'modelSelectorEnabled',
-					label: 'Enable model selector',
-					type: 'checkbox'
-				},
 				{
 					key: 'showToolCalls',
 					label: 'Show tool call labels',
@@ -338,7 +333,7 @@
 			}
 		}
 
-		updateMultipleConfig(processedConfig);
+		settingsStore.updateMultipleConfig(processedConfig);
 		onSave?.();
 	}
 
