@@ -569,13 +569,13 @@ jobs:
     runs-on: windows-latest
 
     env:
-      HIPSDK_INSTALLER_VERSION: "25.Q3"
+      HIPSDK_INSTALLER_VERSION: "23.Q4"
 
     strategy:
       matrix:
         include:
           - name: "radeon"
-            gpu_targets: "gfx1150"
+            gpu_targets: "gfx906"
 
     steps:
       - name: Clone
